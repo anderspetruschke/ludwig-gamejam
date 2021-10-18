@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class DownIndicator : MonoBehaviour
 {
-    [SerializeField] private Transform cameraTransform;
+    [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private RectTransform shadow;
 
     [SerializeField] private Vector2 shadowOffset;
@@ -14,9 +14,9 @@ public class DownIndicator : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var inverseRotation = Quaternion.Inverse(cameraTransform.rotation);
-        transform.rotation = inverseRotation;
-        shadow.transform.rotation = inverseRotation;
+        var rotation = Quaternion.Inverse(playerMovement.GetWorldRotation());
+        transform.rotation = rotation;
+        shadow.transform.rotation = rotation;
         shadow.transform.localPosition = transform.localPosition + (Vector3) shadowOffset;
     }
 }

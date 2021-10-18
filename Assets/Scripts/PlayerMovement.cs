@@ -19,12 +19,20 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _leftPressed;
     private bool _rightPressed;
-    
+    [SerializeField] private bool cameraRotationOn;
+
+    private Quaternion _worldRotation;
+
+    private void Start()
+    {
+        Application.targetFrameRate = 60;
+        
+        _worldRotation = Quaternion.identity;
+    }
+
     private void FixedUpdate()
     {
         //Camera Rotation
-        var cameraRotation = cameraTransform.rotation;
-        
         var horizontalInput = Input.GetAxis("Horizontal") * rotationAngle;
 
         if (_leftPressed && !_rightPressed)
@@ -37,12 +45,16 @@ public class PlayerMovement : MonoBehaviour
             horizontalInput = rotationAngle;
         }
         
-        var currentRotationAngle = cameraRotation.eulerAngles.z;
+        var currentRotationAngle = _worldRotation.eulerAngles.z;
         var rotationTarget = Quaternion.Euler(new Vector3(0, 0, horizontalInput));
 
-        cameraRotation = Quaternion.Lerp(cameraRotation, rotationTarget, rotationSpeed);
-        cameraTransform.rotation = cameraRotation;
+        _worldRotation = Quaternion.Lerp(_worldRotation, rotationTarget, rotationSpeed);
         
+        if (cameraRotationOn)
+        {
+            cameraTransform.rotation = _worldRotation;
+        }
+
         //Camera Position
         var targetCameraPosition = playerTransform.position + cameraOffset;
         targetCameraPosition.z = cameraTransform.position.z;
@@ -54,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
         mainCamera.orthographicSize = Mathf.Clamp(Mathf.Lerp(mainCamera.orthographicSize, playerSpeed / 2f + 4f, 0.01f), 4f, 10f);
         
         //Apply gravity
-        var force = cameraTransform.up * gravity;
+        var force =  _worldRotation * Vector3.up * gravity;
         ballRigidBody.AddForce(force);
 
         foreach (var body in applyGravity)
@@ -84,5 +96,25 @@ public class PlayerMovement : MonoBehaviour
     public void ReleaseRight()
     {
         _rightPressed = false;
+    }
+
+    public Quaternion GetWorldRotation()
+    {
+        return _worldRotation;
+    }
+    
+    public bool GetCameraRotationOn()
+    {
+        return cameraRotationOn;
+    }
+
+    public void SetCameraRotation(bool value)
+    {
+        cameraRotationOn = value;
+
+        if (!cameraRotationOn)
+        {
+            cameraTransform.rotation = Quaternion.identity;
+        }
     }
 }

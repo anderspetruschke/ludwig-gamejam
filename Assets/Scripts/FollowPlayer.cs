@@ -12,7 +12,7 @@ public class FollowPlayer : MonoBehaviour
     
     private void Update()
     {
-        thisRigidBody.velocity =  (Vector2) (playerTransform.position - transform.position) * 100f + playerRigidBody.velocity;
+        thisRigidBody.velocity =  (Vector2) (playerTransform.position - transform.position) * 50f + playerRigidBody.velocity;
         thisRigidBody.angularVelocity = playerRigidBody.angularVelocity;
     }
 }
