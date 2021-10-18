@@ -9,10 +9,12 @@ public class FollowPlayer : MonoBehaviour
     [SerializeField] private Rigidbody2D playerRigidBody;
 
     [SerializeField] private Rigidbody2D thisRigidBody;
+    [SerializeField] private bool rotate;
     
     private void Update()
     {
         thisRigidBody.velocity =  (Vector2) (playerTransform.position - transform.position) * 50f + playerRigidBody.velocity;
-        thisRigidBody.angularVelocity = playerRigidBody.angularVelocity;
+        if(rotate)
+            thisRigidBody.angularVelocity = playerRigidBody.angularVelocity;
     }
 }
