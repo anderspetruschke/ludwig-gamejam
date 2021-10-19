@@ -16,7 +16,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private List<Rigidbody2D> applyGravity;
     [SerializeField] private float angularForce = 10f;
-
+    public float cameraRotationFactor = 0.5f;
+    
     private bool _leftPressed;
     private bool _rightPressed;
     [SerializeField] private bool cameraRotationOn;
@@ -52,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
         
         if (cameraRotationOn)
         {
-            cameraTransform.rotation = _worldRotation;
+            cameraTransform.rotation = Quaternion.Lerp(Quaternion.identity, _worldRotation, cameraRotationFactor);
         }
 
         //Camera Position

@@ -10,11 +10,10 @@ public class DownIndicator : MonoBehaviour
     [SerializeField] private RectTransform shadow;
 
     [SerializeField] private Vector2 shadowOffset;
-    
 
     private void FixedUpdate()
     {
-        var rotation = Quaternion.Inverse(playerMovement.GetWorldRotation());
+        var rotation = Quaternion.Lerp(playerMovement.GetWorldRotation(), Quaternion.identity, playerMovement.cameraRotationFactor);
         transform.rotation = rotation;
         shadow.transform.rotation = rotation;
         shadow.transform.localPosition = transform.localPosition + (Vector3) shadowOffset;
