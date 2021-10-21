@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af7181f404f1447c0a7a17b3070b952b, type: 3}
+  m_Name: Grass
+  m_EditorClassIdentifier: 
+  m_Angles:
+  - m_Start: -45
+    m_End: 45
+    m_Order: 0
+    m_Sprites:
+    - {fileID: -5426697669999587280, guid: f2551bf9bdae19b4e8a74fac4e2db461, type: 3}
+  - m_Start: 45
+    m_End: 135
+    m_Order: 0
+    m_Sprites:
+    - {fileID: 4571664870082335022, guid: f2551bf9bdae19b4e8a74fac4e2db461, type: 3}
+  - m_Start: -225
+    m_End: -135
+    m_Order: 0
+    m_Sprites:
+    - {fileID: 8496924876791270659, guid: f2551bf9bdae19b4e8a74fac4e2db461, type: 3}
+  - m_Start: -135
+    m_End: -45
+    m_Order: 0
+    m_Sprites:
+    - {fileID: -856100570526011138, guid: f2551bf9bdae19b4e8a74fac4e2db461, type: 3}
+  m_FillTexture: {fileID: 2800000, guid: ddc548041fa75d547bde066cf7e5e112, type: 3}
+  m_CornerSprites:
+  - m_CornerType: 0
+    m_Sprites:
+    - {fileID: -1149349807634902364, guid: f2551bf9bdae19b4e8a74fac4e2db461, type: 3}
+  - m_CornerType: 1
+    m_Sprites:
+    - {fileID: 4082374080217626515, guid: f2551bf9bdae19b4e8a74fac4e2db461, type: 3}
+  - m_CornerType: 2
+    m_Sprites:
+    - {fileID: -4087309676702264633, guid: faaf10d433caf5b4a83301b1ef45139e, type: 3}
+  - m_CornerType: 3
+    m_Sprites:
+    - {fileID: -1865757787562490331, guid: faaf10d433caf5b4a83301b1ef45139e, type: 3}
+  - m_CornerType: 4
+    m_Sprites:
+    - {fileID: 2403724249865808194, guid: faaf10d433caf5b4a83301b1ef45139e, type: 3}
+  - m_CornerType: 5
+    m_Sprites:
+    - {fileID: 8040196581939011165, guid: faaf10d433caf5b4a83301b1ef45139e, type: 3}
+  - m_CornerType: 6
+    m_Sprites:
+    - {fileID: -6315978382755026507, guid: faaf10d433caf5b4a83301b1ef45139e, type: 3}
+  - m_CornerType: 7
+    m_Sprites:
+    - {fileID: -1010255394613501995, guid: faaf10d433caf5b4a83301b1ef45139e, type: 3}
+  m_FillOffset: 0
+  m_UseSpriteBorders: 1
