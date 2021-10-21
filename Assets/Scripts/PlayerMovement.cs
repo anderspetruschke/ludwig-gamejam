@@ -26,8 +26,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        Application.targetFrameRate = 60;
-        
+        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            Application.targetFrameRate = 60;
+        }
+
         _worldRotation = Quaternion.identity;
     }
 
