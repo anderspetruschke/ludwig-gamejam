@@ -9,6 +9,8 @@ public class StickToTransform : MonoBehaviour
     [FormerlySerializedAs("playerTransform")] [SerializeField] private Transform otherTransform;
     [SerializeField] private bool invertRotation;
     [SerializeField] private float dampenRotation = 0.5f;
+    [SerializeField] private bool parallax;
+    [SerializeField] private float parallaxFactor = 0.9f;
     
     private Vector3 _offset;
 
@@ -19,7 +21,14 @@ public class StickToTransform : MonoBehaviour
 
     void Update()
     {
-        transform.position = otherTransform.position + _offset;
+        var targetPosition = otherTransform.position;
+
+        if (parallax)
+        {
+            targetPosition = Vector3.Lerp(Vector3.zero, targetPosition, parallaxFactor);
+        }
+        
+        transform.position = targetPosition + _offset;
 
         if (invertRotation)
         {
