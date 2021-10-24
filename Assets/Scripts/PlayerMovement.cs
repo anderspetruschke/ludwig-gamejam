@@ -34,6 +34,10 @@ public class PlayerMovement : MonoBehaviour
 
     public bool _activateTrail;
 
+    private bool _overrideCameraSize;
+    private float _cameraSizeOverridden;
+    private Vector3 _cameraOffsetOverridden;
+    
     private void Start()
     {
         if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
@@ -78,13 +82,23 @@ public class PlayerMovement : MonoBehaviour
         //Camera Position
         var targetCameraPosition = playerTransform.position + cameraOffset;
         targetCameraPosition.z = cameraTransform.position.z;
-
+        
         cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetCameraPosition, followSpeed);
+
 
         //Camera Zoom
         var playerSpeed = Mathf.Abs(ballRigidBody.velocity.x);
-        mainCamera.orthographicSize =
-            Mathf.Clamp(Mathf.Lerp(mainCamera.orthographicSize, playerSpeed / 2f + 4f, 0.01f), 4f, 10f);
+        if (_overrideCameraSize)
+        {
+            mainCamera.orthographicSize =
+                Mathf.Clamp(Mathf.Lerp(mainCamera.orthographicSize, _cameraSizeOverridden, 0.01f), 4f, 10f);
+        }
+        else
+        {
+            mainCamera.orthographicSize =
+                Mathf.Clamp(Mathf.Lerp(mainCamera.orthographicSize, playerSpeed / 2f + 4f, 0.01f), 4f, 10f);
+        }
+        
 
         //Apply gravity
         var force = _worldRotation * Vector3.up * gravity;
@@ -104,8 +118,7 @@ public class PlayerMovement : MonoBehaviour
         var velocityChange = _lastVelocity.magnitude - currentVelocity.magnitude;
         if (velocityChange > impactThreshold)
         {
-            StartCoroutine(CameraShake(Mathf.Lerp(0f, 0.4f, (velocityChange - impactThreshold) / 5f),
-                Mathf.Lerp(0f, 0.12f, (velocityChange - impactThreshold) / 15f)));
+            
         }
 
         _lastVelocity = currentVelocity;
@@ -169,8 +182,8 @@ public class PlayerMovement : MonoBehaviour
             var y = UnityEngine.Random.Range(-1f, 1f) * magnitude;
 
             cameraParent.localPosition = new Vector3(x, y, 0f);
-            elapsed += Time.deltaTime;
-            yield return null;
+            elapsed += 0.05f;
+            yield return new WaitForSeconds(0.05f);
         }
 
         cameraParent.position = Vector3.zero;
@@ -204,5 +217,32 @@ public class PlayerMovement : MonoBehaviour
         {
             trail.emitting = _activateTrail;
         }
+
+        var dot = Vector3.Dot(other.contacts[0].normal, other.relativeVelocity);
+        var value = Mathf.Clamp((dot / 8f) - 0.4f, 0f, 0.6f);
+
+        StartCoroutine(CameraShake(Mathf.Lerp(0f, 0.5f, value),
+            Mathf.Lerp(0f, 0.15f, value)));
+        
+        SoundManager.PlaySound("Hurt", value, 1f, 0.2f);
+
+        if (value > 0)
+        {
+            _activateTrail = false;
+            trail.emitting = false;
+        }
+        
+    }
+
+    public void OverrideCameraSize(float size, Vector3 offset)
+    {
+        _overrideCameraSize = true;
+        _cameraSizeOverridden = size;
+        _cameraOffsetOverridden = offset;
+    }
+
+    public void StopOverridingCamera()
+    {
+        _overrideCameraSize = false;
     }
 }
