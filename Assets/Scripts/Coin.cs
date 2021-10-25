@@ -10,7 +10,8 @@ public class Coin : MonoBehaviour
     public static UnityAction OnCoinCollected;
 
     [SerializeField] private Light2D light;
-    
+    [SerializeField] private ParticleSystem particles;
+    [SerializeField] private AudioSource source;
     private SpriteRenderer _renderer;
     private bool _collected = false;
 
@@ -31,7 +32,9 @@ public class Coin : MonoBehaviour
 
             light.enabled = false;
             _renderer.color = color;
+            particles.Stop();
             _collected = true;
+            source.Play();
         }
     }
 }

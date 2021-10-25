@@ -31,12 +31,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private ParticleSystem groundParticleSystem;
     [SerializeField] private Transform groundParticleTransform;
     [SerializeField] private TrailRenderer trail;
-
+    [SerializeField] private AudioSource groundSource;
+    
     public bool _activateTrail;
 
     private bool _overrideCameraSize;
     private float _cameraSizeOverridden;
     private Vector3 _cameraOffsetOverridden;
+
+    private bool _onGround;
     
     private void Start()
     {
@@ -113,18 +116,13 @@ public class PlayerMovement : MonoBehaviour
         ballRigidBody.angularVelocity += horizontalInput * -angularForce;
 
         //Effects
-        var currentVelocity = ballRigidBody.velocity;
-
-        var velocityChange = _lastVelocity.magnitude - currentVelocity.magnitude;
-        if (velocityChange > impactThreshold)
-        {
-            
-        }
-
-        _lastVelocity = currentVelocity;
-
         var emissionModule = groundParticleSystem.emission;
+
+        
+        groundSource.volume = Mathf.Lerp(groundSource.volume ,Mathf.Lerp(0f, 0.4f, (ballRigidBody.velocity.magnitude / 12f) - 0.6f), 0.05f);
+
         emissionModule.enabled = false;
+        _onGround = false;
     }
 
 
@@ -191,11 +189,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D other)
     {
+        _onGround = true;
+        
         if (ballRigidBody.velocity.magnitude > 6f)
         {
             var emissionModule = groundParticleSystem.emission;
             emissionModule.enabled = true;
             groundParticleTransform.position = other.contacts[0].point;
+            _onGround = true;
         }
         else
         {
@@ -223,8 +224,17 @@ public class PlayerMovement : MonoBehaviour
 
         StartCoroutine(CameraShake(Mathf.Lerp(0f, 0.5f, value),
             Mathf.Lerp(0f, 0.15f, value)));
+
+
+        if (other.contacts[0].collider.CompareTag("Jump"))
+        {
+            SoundManager.PlaySound("Jump", 0.3f * value, 1.5f, 0.1f);
+        }
+        else
+        {
+            SoundManager.PlaySound("Hurt", value, 1f, 0.2f);
+        }
         
-        SoundManager.PlaySound("Hurt", value, 1f, 0.2f);
 
         if (value > 0)
         {
