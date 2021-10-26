@@ -169,6 +169,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator CameraShake(float duration, float magnitude)
     {
+        
         StopAllCoroutines();
         cameraParent.position = Vector3.zero;
 
@@ -222,8 +223,7 @@ public class PlayerMovement : MonoBehaviour
         var dot = Vector3.Dot(other.contacts[0].normal, other.relativeVelocity);
         var value = Mathf.Clamp((dot / 8f) - 0.4f, 0f, 0.6f);
 
-        StartCoroutine(CameraShake(Mathf.Lerp(0f, 0.5f, value),
-            Mathf.Lerp(0f, 0.15f, value)));
+        //StartCoroutine(CameraShake(Mathf.Lerp(0f, 0.5f, value),Mathf.Lerp(0f, 0.15f, value)));
 
 
         if (other.contacts[0].collider.CompareTag("Jump"))
