@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private Transform playerCharacter;
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Camera mainCamera;
@@ -40,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _cameraOffsetOverridden;
 
     private bool _onGround;
-    
+
     private void Start()
     {
         if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
@@ -54,6 +55,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (Vector3.Distance(playerCharacter.position, transform.position) > 0.1f)
+        {
+            playerCharacter.transform.position = transform.position;
+        }
+        
         if (ballRigidBody.velocity.magnitude < 7f)
         {
             _activateTrail = false;
