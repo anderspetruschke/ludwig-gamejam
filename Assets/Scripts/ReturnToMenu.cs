@@ -7,8 +7,9 @@ using UnityEngine.SceneManagement;
 public class ReturnToMenu : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D saveable;
-
-    private void Awake()
+    [SerializeField] private List<Coin> coins;
+    
+    private void Start()
     {
         if (MenuButtons.loadSave && PlayerPrefs.HasKey("Save"))
         {
@@ -24,6 +25,15 @@ public class ReturnToMenu : MonoBehaviour
             var position = transform.position;
             position.z = cameraTransform.position.z;
             cameraTransform.transform.position = position;
+
+            for (var index = 0; index < savedData.coins.Length; index++)
+            {
+                var coinCollected = savedData.coins[index];
+                if (coinCollected)
+                {
+                    coins[index].RestoreCollected();
+                }
+            }
         }
     }
 
@@ -37,9 +47,17 @@ public class ReturnToMenu : MonoBehaviour
 
     public void ToMenu()
     {
+        var collectedCoins = new bool[coins.Count];
+
+        for (var index = 0; index < coins.Count; index++)
+        {
+            var coin = coins[index];
+            collectedCoins[index] = coin.WasCollected();
+        }
+
         var saveData = new SaveData
         {
-            position = saveable.position, velocity = saveable.velocity, angularVelocity = saveable.angularVelocity
+            position = saveable.position, velocity = saveable.velocity, angularVelocity = saveable.angularVelocity, coins = collectedCoins
         };
 
         var json = JsonUtility.ToJson(saveData);
@@ -55,4 +73,5 @@ public class SaveData
     public Vector3 position;
     public Vector3 velocity;
     public float angularVelocity;
+    public bool[] coins;
 }

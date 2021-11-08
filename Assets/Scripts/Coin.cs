@@ -15,7 +15,7 @@ public class Coin : MonoBehaviour
     private SpriteRenderer _renderer;
     private bool _collected = false;
 
-    private void Start()
+    private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
     }
@@ -36,5 +36,22 @@ public class Coin : MonoBehaviour
             _collected = true;
             source.Play();
         }
+    }
+
+    public bool WasCollected()
+    {
+        return _collected;
+    }
+    
+    public void RestoreCollected()
+    {
+        OnCoinCollected?.Invoke();
+        var color = Color.grey;
+        color.a = 0.1f;
+
+        light.enabled = false;
+        _renderer.color = color;
+        particles.Stop();
+        _collected = true;
     }
 }
