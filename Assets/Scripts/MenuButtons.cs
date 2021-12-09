@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class MenuButtons : MonoBehaviour
 {
+    [SerializeField] private SceneLoader sceneLoader;
+    
     public GameObject deactivateOnWebGL;
 
     public Button continueButton;
@@ -31,12 +33,14 @@ public class MenuButtons : MonoBehaviour
     public void StartGame()
     {
         loadSave = false;
-        SceneManager.LoadScene(1);
+        sceneLoader.SetFadeInFillOut();
+        sceneLoader.LoadSceneFadeOutFillIn("Game");
     }
 
     public void Continue()
     {
         loadSave = true;
-        SceneManager.LoadScene(1);
+        sceneLoader.SetFadeInFillOut();
+        sceneLoader.LoadSceneFadeOutFillIn("Game");
     }
 }

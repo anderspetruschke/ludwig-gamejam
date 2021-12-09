@@ -8,6 +8,8 @@ public class ReturnToMenu : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D saveable;
     [SerializeField] private List<Coin> coins;
+    [SerializeField] private SceneLoader sceneLoader;
+    [SerializeField] private Timer timer;
     
     private void Start()
     {
@@ -34,6 +36,10 @@ public class ReturnToMenu : MonoBehaviour
                     coins[index].RestoreCollected();
                 }
             }
+        }
+        else
+        {
+            timer.StartTimer();
         }
     }
 
@@ -63,7 +69,8 @@ public class ReturnToMenu : MonoBehaviour
         var json = JsonUtility.ToJson(saveData);
         PlayerPrefs.SetString("Save", json);
         
-        SceneManager.LoadScene(0);
+        sceneLoader.SetFadeInFillOut();
+        sceneLoader.LoadSceneFadeOutFillIn("Menu");
     }
 }
 
