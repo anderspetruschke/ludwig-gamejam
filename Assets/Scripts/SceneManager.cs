@@ -83,11 +83,8 @@ public class SceneManager : MonoBehaviour
         if (_transitionInProgress) yield break;
         _transitionInProgress = true;
 
-        var loading = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-
         if (fadeOutType != FadingType.None)
         {
-            loading.allowSceneActivation = false;
             FadeOut(fadeOutType);
             yield return new WaitForSeconds(transitionTime);
         }
@@ -95,13 +92,16 @@ public class SceneManager : MonoBehaviour
         for (var i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
         {
             var scene = UnityEngine.SceneManagement.SceneManager.GetSceneAt(i);
-            if (scene.name != "Main" && scene.name != sceneName)
+            if (scene.name != "Main")
             {
                 UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(scene);
             }
         }
 
         yield return new WaitForSeconds(waitTimeBetweenScenes);
+        
+        var loading = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        
         loading.allowSceneActivation = true;
         while (!loading.isDone)
         {

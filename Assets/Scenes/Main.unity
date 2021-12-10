@@ -412,7 +412,7 @@ MonoBehaviour:
   transitionCanvas: {fileID: 829066058}
   transitionCircle: {fileID: 1479256970}
   transitionCircleMask: {fileID: 302083833}
-  waitTimeBetweenScenes: 0.05
+  waitTimeBetweenScenes: 0
   transitionTime: 1
   defaultFadeInType: 1
 --- !u!4 &1363486853

@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI timeText;
-    
+    [SerializeField] private TextMeshProUGUI[] timeTexts;
+
     private DateTime _startedAt;
     private DateTime _finishedAt;
 
@@ -17,7 +18,11 @@ public class Timer : MonoBehaviour
     {
         if(!_started) return;
 
-        timeText.text = (DateTime.Now - _startedAt).Duration().ToString(@"mm\:ss\.ff");
+        foreach (var timeText in timeTexts)
+        {
+            timeText.text = (DateTime.Now - _startedAt).Duration().ToString(@"mm\:ss\.ff");
+        }
+        
     }
     
     public void StartTimer()
@@ -32,6 +37,9 @@ public class Timer : MonoBehaviour
         
         _started = false;
         _finishedAt = DateTime.Now;
-        timeText.text = (DateTime.Now - _startedAt).Duration().ToString(@"mm\:ss\.ff");
+        foreach (var timeText in timeTexts)
+        {
+            timeText.text = (DateTime.Now - _startedAt).Duration().ToString(@"mm\:ss\.ff");
+        }
     }
 }

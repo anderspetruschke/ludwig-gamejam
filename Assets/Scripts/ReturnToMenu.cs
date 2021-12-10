@@ -49,6 +49,11 @@ public class ReturnToMenu : MonoBehaviour
         {
             ToMenu();
         }
+        
+        if (Input.GetKey("r"))
+        {
+            Restart();
+        }
     }
 
     public void ToMenu()
@@ -69,8 +74,15 @@ public class ReturnToMenu : MonoBehaviour
         var json = JsonUtility.ToJson(saveData);
         PlayerPrefs.SetString("Save", json);
         
-        sceneLoader.SetFadeInFillOut();
+        sceneLoader.SetFadeInFillIn();
         sceneLoader.LoadSceneFadeOutFillIn("Menu");
+    }
+    
+    public void Restart()
+    {
+        MenuButtons.loadSave = false;
+        sceneLoader.SetFadeInFillIn();
+        sceneLoader.LoadSceneFadeOutFillIn("Game");
     }
 }
 

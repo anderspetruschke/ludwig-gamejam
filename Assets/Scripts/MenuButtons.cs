@@ -33,14 +33,14 @@ public class MenuButtons : MonoBehaviour
     public void StartGame()
     {
         loadSave = false;
-        sceneLoader.SetFadeInFillOut();
+        sceneLoader.SetFadeInFillIn();
         sceneLoader.LoadSceneFadeOutFillIn("Game");
     }
 
     public void Continue()
     {
         loadSave = true;
-        sceneLoader.SetFadeInFillOut();
+        sceneLoader.SetFadeInFillIn();
         sceneLoader.LoadSceneFadeOutFillIn("Game");
     }
 }
